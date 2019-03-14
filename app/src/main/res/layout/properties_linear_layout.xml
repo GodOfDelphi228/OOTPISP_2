@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/properties_layout_padding"
+    android:background="@drawable/properties_layout_drawable">
+    
+    <Button
+        android:id="@+id/properties_color_button"
+        style="@style/PropertyItem"
+        android:layout_marginTop="0dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/properties_style_image_view"
+        style="@style/PropertyItem"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/properties_back"
+        style="@style/PropertyItem"
+        android:padding="4dp"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/properties_polygon_confirm"
+        style="@style/PropertyItem"
+        android:layout_marginBottom="0dp"
+        android:visibility="gone"
+        app:srcCompat="@android:drawable/checkbox_on_background" />
+
+</LinearLayout>
