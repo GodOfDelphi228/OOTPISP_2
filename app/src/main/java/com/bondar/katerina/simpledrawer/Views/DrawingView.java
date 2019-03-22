@@ -92,7 +92,7 @@ public class DrawingView extends View {
                     } else {
                         ((Polygon) currentShape).addPoint(x, y);
                     }
-                    invalidate();
+                    invalidate(); //перерисовка
                 }
                 break;
 

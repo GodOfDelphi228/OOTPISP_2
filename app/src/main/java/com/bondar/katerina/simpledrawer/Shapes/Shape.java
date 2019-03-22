@@ -6,11 +6,11 @@ import android.graphics.Point;
 
 public abstract class Shape {
 
-    protected Point startPoint;
-    protected Paint shapePaint;
-    protected Point endPoint;
+    Point startPoint;
+    Paint shapePaint; //кисточка
+    Point endPoint;
 
-    public Shape(int x, int y, Paint paint) {
+    Shape(int x, int y, Paint paint) {
         startPoint = new Point(x, y);
         shapePaint = new Paint(paint);
         endPoint = new Point(x, y);
