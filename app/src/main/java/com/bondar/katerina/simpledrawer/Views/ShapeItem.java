@@ -19,6 +19,7 @@ public class ShapeItem extends View {
     public static final int SHAPE_CIRCLE = 3;
     public static final int SHAPE_OVAL = 4;
     public static final int SHAPE_POLYGON = 5;
+    public static final int SHAPE_TRIANGLE = 6;
 
     private Paint paint;
     private int currentShape;
@@ -88,6 +89,17 @@ public class ShapeItem extends View {
                 polygonPath.lineTo(left, top);
                 polygonPath.lineTo(4 * left, 4 * top);
                 polygonPath.lineTo(right, 4 * top);
+                polygonPath.close();
+                canvas.drawPath(polygonPath, paint);
+                break;
+
+            case SHAPE_TRIANGLE:
+                polygonPath.reset();
+                polygonPath.setFillType(Path.FillType.EVEN_ODD);
+                polygonPath.moveTo(left + 80, top); // Top
+                polygonPath.lineTo(left , top + 100); // Bottom left
+                polygonPath.lineTo(left + 150, top + 100); // Bottom right
+                polygonPath.lineTo(left + 80, top); // Back to Top
                 polygonPath.close();
                 canvas.drawPath(polygonPath, paint);
         }

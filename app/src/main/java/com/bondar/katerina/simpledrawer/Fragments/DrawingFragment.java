@@ -103,4 +103,9 @@ public class DrawingFragment extends Fragment
     public void onBackClicked() {
         drawingView.cancelLast();
     }
+
+    @Override
+    public void onForwardClicked() {
+        drawingView.getBack();
+    }
 }

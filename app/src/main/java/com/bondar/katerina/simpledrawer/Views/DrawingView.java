@@ -1,5 +1,6 @@
 package com.bondar.katerina.simpledrawer.Views;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import com.bondar.katerina.simpledrawer.Shapes.Polygon;
 import com.bondar.katerina.simpledrawer.Shapes.Rectangle;
 import com.bondar.katerina.simpledrawer.Shapes.RoundedRectangle;
 import com.bondar.katerina.simpledrawer.Shapes.Shape;
+import com.bondar.katerina.simpledrawer.Shapes.Triangle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +30,9 @@ public class DrawingView extends View {
     private Paint currentPaint;
 
     private List<Shape> shapesForDrawing;
+    private List<Shape> shapesForForward;
     private Shape currentShape;
+    private int triangleCounter = 0;
 
     public DrawingView(Context context) {
         super(context);
@@ -45,11 +49,18 @@ public class DrawingView extends View {
         init();
     }
 
+    @TargetApi(21)
+    public DrawingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
     private void init() {
         currentPaint = new Paint();
         currentPaint.setColor(Color.BLACK);
         currentPaint.setStyle(Paint.Style.FILL);
         shapesForDrawing = new LinkedList<>();
+        shapesForForward = new LinkedList<>();
         currentShapeType = ShapeItem.SHAPE_CIRCLE;
     }
 
@@ -92,7 +103,7 @@ public class DrawingView extends View {
                     } else {
                         ((Polygon) currentShape).addPoint(x, y);
                     }
-                    invalidate(); //перерисовка
+                    invalidate();
                 }
                 break;
 
@@ -100,6 +111,20 @@ public class DrawingView extends View {
                 if (currentShape instanceof Polygon) {
                     ((Polygon)currentShape).addPoint(x, y);
                     invalidate();
+                } else if (currentShape instanceof Triangle)  {
+                    Triangle current = (Triangle) currentShape;
+                    if (triangleCounter == 1) {
+                        current.setSecondPoint(x, y);
+                        triangleCounter++;
+                    } else if (triangleCounter == 2) {
+                        current.setEndPoint(x, y);
+                        currentShape = null;
+                        invalidate();
+                        triangleCounter = 0;
+                    } else {
+                        triangleCounter++;
+                    }
+
                 } else {
                     currentShape = null;
                 }
@@ -135,6 +160,10 @@ public class DrawingView extends View {
                 currentShape = new Polygon(x, y, currentPaint);
                 break;
 
+            case ShapeItem.SHAPE_TRIANGLE:
+                currentShape = new Triangle(x, y, currentPaint);
+                break;
+
             default:
                 currentShape = new Rectangle(x, y, currentPaint);
                 break;
@@ -168,8 +197,19 @@ public class DrawingView extends View {
     public void cancelLast() {
         int size = shapesForDrawing.size();
         if (size > 0) {
+            shapesForForward.add(shapesForDrawing.get(size - 1));
             shapesForDrawing.remove(size - 1);
             currentShape = null;
+            invalidate();
+        }
+    }
+
+    public void getBack() {
+        int size = shapesForForward.size();
+        if (size > 0) {
+            shapesForDrawing.add(shapesForForward.get(size - 1));
+            currentShape = shapesForForward.get(size - 1);
+            shapesForForward.remove(size - 1);
             invalidate();
         }
     }

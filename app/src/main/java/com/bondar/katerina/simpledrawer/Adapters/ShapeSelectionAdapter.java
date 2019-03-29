@@ -14,7 +14,7 @@ import com.bondar.katerina.simpledrawer.Views.ShapeItem;
 
 public class ShapeSelectionAdapter extends RecyclerView.Adapter<ShapeSelectionAdapter.ViewHolder> {
 
-    private int[] shapes = new int[6];
+    private int[] shapes = new int[7];
     private Paint paint;
     private Fragment parent;
 

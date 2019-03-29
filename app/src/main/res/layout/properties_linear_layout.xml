@@ -11,19 +11,23 @@
     <Button
         android:id="@+id/properties_color_button"
         style="@style/PropertyItem"
-        android:layout_marginTop="0dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="0dp"/>
 
     <ImageView
         android:id="@+id/properties_style_image_view"
-        style="@style/PropertyItem"
-        android:visibility="gone"/>
+        style="@style/PropertyItem"/>
 
     <ImageView
         android:id="@+id/properties_back"
         style="@style/PropertyItem"
         android:padding="4dp"
         app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/properties_forward"
+        style="@style/PropertyItem"
+        android:padding="4dp"
+        app:srcCompat="@drawable/forward" />
 
     <ImageView
         android:id="@+id/properties_polygon_confirm"

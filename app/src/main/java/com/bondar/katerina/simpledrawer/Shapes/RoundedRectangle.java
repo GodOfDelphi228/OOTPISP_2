@@ -13,6 +13,10 @@ public class RoundedRectangle extends Rectangle {
         this.radius = radius;
     }
 
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         canvas.drawRoundRect(rect, radius, radius, shapePaint);

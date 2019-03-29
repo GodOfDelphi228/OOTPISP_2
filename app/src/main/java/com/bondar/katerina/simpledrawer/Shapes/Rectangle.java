@@ -6,7 +6,7 @@ import android.graphics.RectF;
 
 public class Rectangle extends Shape {
 
-    RectF rect;
+    protected RectF rect;
 
     public Rectangle(int startX, int startY, Paint paint) {
         super(startX, startY, paint);

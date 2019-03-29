@@ -26,6 +26,7 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
     private ImageView mStyleImageView;
     private ImageView mConfirm;
     private ImageView mBack;
+    private ImageView mForward;
     private Fragment fragment;
 
     private int shapeStyle;
@@ -57,6 +58,7 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         mStyleImageView = findViewById(R.id.properties_style_image_view);
         mConfirm = findViewById(R.id.properties_polygon_confirm);
         mBack = findViewById(R.id.properties_back);
+        mForward = findViewById(R.id.properties_forward);
 
         mStyleImageView.setImageResource(R.drawable.fill);
         shapeStyle = STYLE_FILLED;
@@ -65,6 +67,7 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         mStyleImageView.setOnClickListener(this);
         mConfirm.setOnClickListener(this);
         mBack.setOnClickListener(this);
+        mForward.setOnClickListener(this);
     }
 
     public void setCurrentColor(int color) {
@@ -103,6 +106,10 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
             case R.id.properties_back:
                 mCallBack.onBackClicked();
                 break;
+
+            case R.id.properties_forward:
+                mCallBack.onForwardClicked();
+                break;
         }
     }
 
@@ -129,5 +136,6 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         void onPropertyChanged(int propertyType, int code);
         void onConfirmClicked();
         void onBackClicked();
+        void onForwardClicked();
     }
 }
