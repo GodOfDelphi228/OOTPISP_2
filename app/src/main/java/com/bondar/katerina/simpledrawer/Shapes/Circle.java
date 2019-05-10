@@ -3,6 +3,9 @@ package com.bondar.katerina.simpledrawer.Shapes;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.bondar.katerina.simpledrawer.Interfaces.IEditable;
+import com.bondar.katerina.simpledrawer.Interfaces.ISelectable;
+
 public class Circle extends Shape {
 
     private float centerX;

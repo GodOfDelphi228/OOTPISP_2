@@ -27,7 +27,9 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
     private ImageView mConfirm;
     private ImageView mBack;
     private ImageView mForward;
+    private ImageView mEdit;
     private Fragment fragment;
+    private int editClicked = 0;
 
     private int shapeStyle;
 
@@ -59,6 +61,7 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         mConfirm = findViewById(R.id.properties_polygon_confirm);
         mBack = findViewById(R.id.properties_back);
         mForward = findViewById(R.id.properties_forward);
+        mEdit = findViewById(R.id.properties_edit);
 
         mStyleImageView.setImageResource(R.drawable.fill);
         shapeStyle = STYLE_FILLED;
@@ -68,6 +71,7 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         mConfirm.setOnClickListener(this);
         mBack.setOnClickListener(this);
         mForward.setOnClickListener(this);
+        mEdit.setOnClickListener(this);
     }
 
     public void setCurrentColor(int color) {
@@ -110,6 +114,21 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
             case R.id.properties_forward:
                 mCallBack.onForwardClicked();
                 break;
+
+            case R.id.properties_edit:
+                editClicked++;
+                int red = editClicked % 3;
+                if (red == 0) {
+                    mEdit.setImageDrawable(getContext().getDrawable(R.drawable.ic_brush_black));
+                    mCallBack.onEditClicked(0);
+                } else if (red == 1) {
+                    mEdit.setImageDrawable(getContext().getDrawable(R.drawable.ic_crop_free_black));
+                    mCallBack.onEditClicked(1);
+                } else if (red == 2) {
+                    mEdit.setImageDrawable(getContext().getDrawable(R.drawable.ic_edit_black));
+                    mCallBack.onEditClicked(2);
+                }
+                break;
         }
     }
 
@@ -137,5 +156,6 @@ public class PropertiesSelectionLayout extends LinearLayout implements View.OnCl
         void onConfirmClicked();
         void onBackClicked();
         void onForwardClicked();
+        void onEditClicked(int type);
     }
 }

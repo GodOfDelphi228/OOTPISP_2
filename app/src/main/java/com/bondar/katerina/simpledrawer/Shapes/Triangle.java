@@ -50,13 +50,13 @@ public class Triangle extends Shape {
         secondPoint = new Point(x, y);
     }
 
+    public Point getSecondPoint() {
+        return secondPoint;
+    }
+
     @Override
     public void setEndPoint(int x, int y) {
         super.setEndPoint(x, y);
     }
 
-    @Override
-    public void setShapePaintStyle(Paint.Style style) {
-        super.setShapePaintStyle(style);
-    }
 }

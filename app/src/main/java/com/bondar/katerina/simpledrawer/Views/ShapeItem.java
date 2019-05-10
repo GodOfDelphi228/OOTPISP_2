@@ -18,8 +18,7 @@ public class ShapeItem extends View {
     public static final int SHAPE_ROUNDED_RECTANGLE = 2;
     public static final int SHAPE_CIRCLE = 3;
     public static final int SHAPE_OVAL = 4;
-    public static final int SHAPE_POLYGON = 5;
-    public static final int SHAPE_TRIANGLE = 6;
+    public static final int SHAPE_TRIANGLE = 5;
 
     private Paint paint;
     private int currentShape;
@@ -82,15 +81,6 @@ public class ShapeItem extends View {
 
             case SHAPE_OVAL:
                 canvas.drawOval(rect, paint);
-                break;
-
-            case SHAPE_POLYGON:
-                polygonPath.moveTo(left, bottom);
-                polygonPath.lineTo(left, top);
-                polygonPath.lineTo(4 * left, 4 * top);
-                polygonPath.lineTo(right, 4 * top);
-                polygonPath.close();
-                canvas.drawPath(polygonPath, paint);
                 break;
 
             case SHAPE_TRIANGLE:

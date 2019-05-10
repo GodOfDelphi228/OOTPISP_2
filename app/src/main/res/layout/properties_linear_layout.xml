@@ -30,6 +30,12 @@
         app:srcCompat="@drawable/forward" />
 
     <ImageView
+        android:id="@+id/properties_edit"
+        style="@style/PropertyItem"
+        android:padding="4dp"
+        app:srcCompat="@drawable/ic_brush_black" />
+
+    <ImageView
         android:id="@+id/properties_polygon_confirm"
         style="@style/PropertyItem"
         android:layout_marginBottom="0dp"

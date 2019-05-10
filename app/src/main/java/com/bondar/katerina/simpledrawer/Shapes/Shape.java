@@ -4,13 +4,18 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-public abstract class Shape {
+import com.bondar.katerina.simpledrawer.Interfaces.IEditable;
+import com.bondar.katerina.simpledrawer.Interfaces.ISelectable;
 
-    protected Point startPoint;
-    protected Paint shapePaint;
-    protected Point endPoint;
+import java.io.Serializable;
 
-    public Shape(int x, int y, Paint paint) {
+public class Shape  implements IEditable, ISelectable {
+
+    Point startPoint;
+    Paint shapePaint;
+    Point endPoint;
+
+    Shape(int x, int y, Paint paint) {
         startPoint = new Point(x, y);
         shapePaint = new Paint(paint);
         endPoint = new Point(x, y);
@@ -18,6 +23,10 @@ public abstract class Shape {
 
     public Point getStartPoint() {
         return startPoint;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
     }
 
     public void setStartPoint(Point startPoint) {
@@ -28,13 +37,17 @@ public abstract class Shape {
         shapePaint.setColor(shapeColor);
     }
 
-    public abstract void draw(Canvas canvas);
+    public void draw(Canvas canvas){}
 
     public void setEndPoint(int x, int y) {
         endPoint.set(x, y);
     }
 
-    public void setShapePaintStyle(Paint.Style style) {
-        shapePaint.setStyle(style);
+    public void setShapePaint(Paint paint) {
+        this.shapePaint = paint;
+    }
+
+    public Paint getShapePaint() {
+        return shapePaint;
     }
 }
