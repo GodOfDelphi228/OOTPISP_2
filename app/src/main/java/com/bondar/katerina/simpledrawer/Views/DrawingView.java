@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.bondar.katerina.simpledrawer.Interfaces.IEditable;
 import com.bondar.katerina.simpledrawer.Interfaces.ISelectable;
 import com.bondar.katerina.simpledrawer.Shapes.Circle;
@@ -177,7 +176,6 @@ public class DrawingView extends View {
                             shapeInEdit = triangle;
                         } else {
                             shapeInEdit.setEndPoint(x, y);
-                            shapeInEdit.setShapePaint(currentPaint);
                         }
                         Paint newPaint = new Paint();
                         newPaint.setColor(currentPaint.getColor());

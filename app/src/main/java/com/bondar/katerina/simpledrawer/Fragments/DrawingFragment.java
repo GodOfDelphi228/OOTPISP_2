@@ -1,11 +1,10 @@
 package com.bondar.katerina.simpledrawer.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.bondar.katerina.simpledrawer.Adapters.ShapeSelectionAdapter;
 import com.bondar.katerina.simpledrawer.R;
-import com.bondar.katerina.simpledrawer.Repository.PreferencesRepository;
 import com.bondar.katerina.simpledrawer.Shapes.Circle;
 import com.bondar.katerina.simpledrawer.Shapes.Line;
 import com.bondar.katerina.simpledrawer.Shapes.Oval;
@@ -26,11 +25,17 @@ import com.bondar.katerina.simpledrawer.Shapes.Shape;
 import com.bondar.katerina.simpledrawer.Shapes.Triangle;
 import com.bondar.katerina.simpledrawer.Views.DrawingView;
 import com.bondar.katerina.simpledrawer.Views.PropertiesSelectionLayout;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DrawingFragment extends Fragment
-        implements PropertiesSelectionLayout.PropertiesListener, ShapeSelectionAdapter.OnShapeSelectListener{
+        implements PropertiesSelectionLayout.PropertiesListener, ShapeSelectionAdapter.OnShapeSelectListener {
 
     private DrawingView drawingView;
     private PropertiesSelectionLayout propertiesLayout;
@@ -63,7 +68,7 @@ public class DrawingFragment extends Fragment
     }
 
     private void restoreState() {
-        String picture = PreferencesRepository.getInstance(getContext()).getString("picture", "");
+        String picture = readFromFile();
         drawingView.setPicture(getShapesFor(picture));
     }
 
@@ -135,11 +140,8 @@ public class DrawingFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        SharedPreferences.Editor editor = PreferencesRepository.getInstance(getContext()).edit();
         String serValue =  getTextSerializeFor(drawingView.getPicture());
-        Log.d("serValue", serValue);
-        editor.putString("picture", serValue);
-        editor.apply();
+        writeToFile(serValue);
     }
 
     private String getTextSerializeFor(List<Shape> shapes) {
@@ -150,17 +152,17 @@ public class DrawingFragment extends Fragment
                 result += "triangle" + "@(" + triangle.getStartPoint().x + ";" + triangle.getStartPoint().y + ")" + " "
                         + "(" + triangle.getSecondPoint().x + ";" + triangle.getSecondPoint().y + ")" + " "
                         + "(" + triangle.getEndPoint().x + ";" + triangle.getEndPoint().y + ")" + "@" + triangle.getShapePaint().getColor();
-            } else if (shape instanceof Rectangle) {
-                Rectangle cur = (Rectangle) shape;
-                result += "rectangle" + "@(" + cur.getStartPoint().x + ";" + cur.getStartPoint().y + ")" + " "
+            } else if (shape instanceof Oval) {
+                Oval cur = (Oval) shape;
+                result += "oval" + "@(" + cur.getStartPoint().x + ";" + cur.getStartPoint().y + ")" + " "
                         + "(" + cur.getEndPoint().x + ";" + cur.getEndPoint().y + ")" + "@" + cur.getShapePaint().getColor();
             } else if (shape instanceof RoundedRectangle) {
                 RoundedRectangle cur = (RoundedRectangle) shape;
                 result += "rounded_rectangle" + "@(" + cur.getStartPoint().x + ";" + cur.getStartPoint().y + ")" + " "
                         + "(" + cur.getEndPoint().x + ";" + cur.getEndPoint().y + ")" + "@" + cur.getShapePaint().getColor();
-            } else if (shape instanceof Oval) {
-                Oval cur = (Oval) shape;
-                result += "oval" + "@(" + cur.getStartPoint().x + ";" + cur.getStartPoint().y + ")" + " "
+            } else if (shape instanceof Rectangle) {
+                Rectangle cur = (Rectangle) shape;
+                result += "rectangle" + "@(" + cur.getStartPoint().x + ";" + cur.getStartPoint().y + ")" + " "
                         + "(" + cur.getEndPoint().x + ";" + cur.getEndPoint().y + ")" + "@" + cur.getShapePaint().getColor();
             } else if (shape instanceof Line) {
                 Line cur = (Line) shape;
@@ -184,7 +186,10 @@ public class DrawingFragment extends Fragment
         String[] strShapes = ser.split("&");
         for (String strShape : strShapes) {
             if (strShape.length() > 0) {
-                shapes.add(createShapeFor(strShape));
+                Shape restoredShape = createShapeFor(strShape);
+                if (restoredShape != null) {
+                    shapes.add(restoredShape);
+                }
             }
         }
         return shapes;
@@ -249,5 +254,44 @@ public class DrawingFragment extends Fragment
             points.add(new Point(Integer.parseInt(coordinates[0]), Integer.parseInt(coordinates[1])));
         }
         return points;
+    }
+
+    private void writeToFile(String data) {
+        try {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File file = new File(path, "shapes.txt");
+            FileOutputStream stream = new FileOutputStream(file);
+            try {
+                stream.write(data.getBytes());
+            } finally {
+                stream.close();
+            }
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    private String readFromFile() {
+        String ret = "";
+        try {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File file = new File(path, "shapes.txt");
+            int length = (int) file.length();
+            byte[] bytes = new byte[length];
+            FileInputStream in = new FileInputStream(file);
+            try {
+                in.read(bytes);
+            } finally {
+                in.close();
+            }
+            ret = new String(bytes);
+        }
+        catch (FileNotFoundException e) {
+            Log.e("Exception", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("Exception", "Can not read file: " + e.toString());
+        }
+        return ret;
     }
 }
